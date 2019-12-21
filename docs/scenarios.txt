@@ -4,18 +4,21 @@
 
 node cut.js -f 3 filename
 node cut.js -f 3,5 -d "," filename
+node cut.js -f 3-5 -d "," filename
 node cut.js -f -3 -d "," filename
 node cut.js -f 3- -d "," filename
-node cut.js -f 3-5 -d "," filename
 
 => cut text which is given as a standard input based on any above options
     cat filename | cut [-b | -c | -f] list
 
-cat filename | node cut.js -f 3,5 -d "," filename
 cat filename | node cut.js -f 3 -d " " filename
+cat filename | node cut.js -f 3,5 -d "," filename
+cat filename | node cut.js -f 3-5 -d "," filename
+cat filename | node cut.js -f -3 -d ","
+cat filename | node cut.js -f 3- -d ","
+node cut.js -f 3 (standard input)
 --next version-- cat filename | node cut.js -b 3 -d "," filename
 --next version-- cat filename | node cut.js -c 3 -d "," filename
-node cut.js -f 3 (standard input)
 
 
 === === === === === === === === === === === === === === === ===
