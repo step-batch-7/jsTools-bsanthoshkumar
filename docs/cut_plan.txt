@@ -1,0 +1,146 @@
+sample.txt:-
+  Andhra Pradesh
+  Arunachal Pradesh
+  Assam
+  Bihar
+  Chhattisgarh
+
+
+===first flow===(cut text in a file based on specified bytes)
+
+example:
+input ==> cut -b 1-5 sample.txt
+output ==> 
+Andhr
+Aruna
+Assam
+Bihar
+Chhat
+
+
+[1.1] The last step
+output => text: context
+  "Andhr\nAruna\nAssam\nBihar\nChhat"
+input => array of strings: extractedTextOfLines
+  ["Andhr","Aruna","Assam","Bihar","Chhat"]
+name => parseExtractedContent
+
+[1.2] The previous step
+output => array of strings: extractedContent
+  ["Andhr","Aruna","Assam","Bihar","Chhat"]
+input => array of strings :file content
+  ["Andhra Pradesh"," Arunachal Pradesh"," Assam"," Bihar", "Chhattisgarh"],"1-5"
+name => extractFileContent
+
+[1.3a]
+output => array of strings :file content
+  ["Andhra Pradesh"," Arunachal Pradesh"," Assam"," Bihar", "Chhattisgarh"],"1-5"
+input => array of strings :commandLineArgs
+  ["-b","1-5","sample.txt"]
+name => readFileContent
+
+[1.3b]
+output =>text : message
+   "No such file or directory"
+input => array of strings :commandLineArgs
+  ["-b","1-5","sample.txt"]
+name => readFileContent
+
+[1.4] The first step
+output => array of strings: user options 
+  ["-b","1-5","sample.txt"]
+input => array of strings: commandLineArgs
+  ["node","./cut.js","-b","1-5","./sample.txt"]
+name => extractCmdLineArgs
+
+
+===second flow===
+example:
+input ==> cut -c 1,3,5 sample.txt
+output ==> 
+Adr
+Aua
+Asm
+Bhr
+Cht
+
+[2.1] The last step
+output => text: cutText
+  "Adr\nAua\nAsm\nBhr\nCht"
+input => array of strings: extractedTextOfLines
+  ["Adr","Aua","Asm","Bhr","Cht"]
+name => parseExtractedContent
+
+[2.2] The previous step
+output => array of strings: extractedContent
+  ["Adr","Aua","Asm","Bhr","Cht"]
+input => array of strings :file content
+  ["Andhra Pradesh"," Arunachal Pradesh"," Assam"," Bihar", "Chhattisgarh"],"1,3,5"
+name => extractFileContent
+
+[2.3a]
+output => array of strings :file content
+  ["Andhra Pradesh"," Arunachal Pradesh"," Assam"," Bihar", "Chhattisgarh"],"1,3,5"
+input => array of strings :commandLineArgs
+  ["-b","1,3,5","sample.txt"]
+name => readFileContent
+
+[2.3b]
+output =>text : message
+   "No such file or directory"
+input => array of strings :commandLineArgs
+  ["-b","1,3,5","sample.txt"]
+name => readFileContent
+
+[2.4] The first step
+output => array of strings: user options 
+  ["-b","1,3,5","sample.txt"]
+input => array of strings: commandLineArgs
+  ["node","./cut.js","-c","1,3,5","./sample.txt"]
+name => extractCmdLineArgs
+
+
+===third flow===
+example:
+input ==> cut -d " " -f 2 sample.txt
+output ==> 
+Pradesh
+Pradesh
+Assam
+Bihar
+Chhattisgarh
+
+[3.1] The last step
+output => text: content
+"Pradesh\nPradesh\nAssam\nBihar\nChhattisgarh"
+input => array of strings: extractedTextOfLines
+  ["Pradesh","Pradesh","Assam","Bihar","Chhattisgarh"]
+name => parseExtractedContent
+
+[3.2] The previous step
+output => array of strings: extractedContent
+  ["Pradesh","Pradesh","Assam","Bihar","Chhattisgarh"]
+input => array of strings :file content
+  ["Andhra Pradesh"," Arunachal Pradesh"," Assam"," Bihar", "Chhattisgarh"],"1,3,5"
+name => extractFileContent
+
+[3.3a]
+output => array of strings :file content
+  ["Andhra Pradesh"," Arunachal Pradesh"," Assam"," Bihar", "Chhattisgarh"],"1,3,5"
+input => array of strings :commandLineArgs
+  ["-d"," ",-f,"2","sample.txt"]
+name => readFileContent
+
+[3.3b]
+output =>text : message
+   "No such file or directory"
+input => array of strings :commandLineArgs
+  ["-d"," ",-f,"2","sample.txt"]
+name => readFileContent
+
+[3.4] The first step
+output => array of strings: user options 
+  ["-d"," ",-f,"2","sample.txt"]
+input => array of strings: commandLineArgs
+  ["node","./cut.js","-c","1,3,5","./sample.txt"]
+name => extractCmdLineArgs

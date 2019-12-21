@@ -1,0 +1,42 @@
+=> cut text in a file based on specified fields
+    cut -f list -d delimiter filename(s)
+    (text at the specified fields(separated by delimiter) of each line in a specified file(s) )
+
+node cut.js -f 3 filename
+node cut.js -f 3,5 -d "," filename
+node cut.js -f -3 -d "," filename
+node cut.js -f 3- -d "," filename
+node cut.js -f 3-5 -d "," filename
+
+=> cut text which is given as a standard input based on any above options
+    cat filename | cut [-b | -c | -f] list
+
+cat filename | node cut.js -f 3,5 -d "," filename
+cat filename | node cut.js -f 3 -d " " filename
+cat filename | node cut.js -b 3 -d "," filename
+cat filename | node cut.js -c 3 -d "," filename
+node cut.js -f 3 (standard input)
+
+
+=== === === === === === === === === === === === === === === ===
+
+
+=> cut text in a file based on specified bytes
+    cut -b list filename(s)
+    (text at the specified byte positions of each line in a specified file(s)).
+
+node cut.js -b 3 filename
+node cut.js -b 3,5 filename
+node cut.js -b 3- filename
+node cut.js -b -3 filename
+node cut.js -b 3-5 filename
+
+=> cut text in a file based on specified characters
+    cut -c list filename(s)
+    (text at the specified character positions of each line in a specified file(s)).
+
+node cut.js -c 3 filename
+node cut.js -c 3,5 filename
+node cut.js -c 3- filename
+node cut.js -c -3 filename
+node cut.js -c 3-5 filename
