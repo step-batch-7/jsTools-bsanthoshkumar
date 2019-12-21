@@ -13,8 +13,8 @@ node cut.js -f 3-5 -d "," filename
 
 cat filename | node cut.js -f 3,5 -d "," filename
 cat filename | node cut.js -f 3 -d " " filename
-cat filename | node cut.js -b 3 -d "," filename
-cat filename | node cut.js -c 3 -d "," filename
+--next version-- cat filename | node cut.js -b 3 -d "," filename
+--next version-- cat filename | node cut.js -c 3 -d "," filename
 node cut.js -f 3 (standard input)
 
 
