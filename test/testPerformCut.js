@@ -13,15 +13,18 @@ describe("performCutOpertion", function() {
       encoding: "utf8"
     };
     const args = ["-f", "3", "./sampleText.txt"];
-    const expected = "3\n13\n23\n33\n43";
-    assert.strictEqual(performCutOperation(args, fileSys), expected);
+    const expected = { cutLines: "3\n13\n23\n33\n43", error: "" };
+    assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
   });
 
   it("should give error for wrong filePath", function() {
     const existsFile = filePath => false;
     const fileSys = { existsFile: existsFile };
     const args = ["-f", "3", "./sampleText.txt"];
-    const expected = `cut: ./sampleText.txt: No such File or Directory`;
-    assert.strictEqual(performCutOperation(args, fileSys), expected);
+    const expected = {
+      cutLines: "",
+      error: `cut: ./sampleText.txt: No such File or Directory`
+    };
+    assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
   });
 });

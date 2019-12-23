@@ -5,13 +5,16 @@ const {
   parseCmdLineArgs
 } = require("../src/cutLib");
 
-const performCutOperation = function(args, fileSys) {
+const performCutOperation = function(args, fileSys, result) {
   const userOptions = parseCmdLineArgs(args);
-  if (!fileSys.existsFile(userOptions.filePath))
-    return `cut: ${userOptions.filePath}: No such File or Directory`;
+  if (!fileSys.existsFile(userOptions.filePath)) {
+    error = `cut: ${userOptions.filePath}: No such File or Directory`;
+    return { error };
+  }
   const fileContent = readFileContent(fileSys, userOptions.filePath);
   const extractedContent = extractFileContent(fileContent, userOptions);
-  return joinExtractedLines(extractedContent);
+  const cutLines = joinExtractedLines(extractedContent);
+  return { cutLines };
 };
 
 module.exports = { performCutOperation };
