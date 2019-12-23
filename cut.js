@@ -8,7 +8,6 @@ const main = function() {
     encoding: "utf8"
   };
   const result = performCutOperation(process.argv.slice(2), fileSys);
-  console.log(result.error);
   result.cutLines && process.stdout.write(result.cutLines);
   result.error && process.stderr.write(result.error);
 };

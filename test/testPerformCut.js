@@ -13,7 +13,7 @@ describe("performCutOpertion", function() {
       encoding: "utf8"
     };
     const args = ["-f", "3", "./sampleText.txt"];
-    const expected = { cutLines: "3\n13\n23\n33\n43", error: "" };
+    const expected = { cutLines: "3\n13\n23\n33\n43" };
     assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
   });
 
@@ -22,7 +22,6 @@ describe("performCutOpertion", function() {
     const fileSys = { existsFile: existsFile };
     const args = ["-f", "3", "./sampleText.txt"];
     const expected = {
-      cutLines: "",
       error: `cut: ./sampleText.txt: No such File or Directory`
     };
     assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
