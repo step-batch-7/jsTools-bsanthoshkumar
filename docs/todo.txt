@@ -13,7 +13,7 @@ cat filename | node cut.js -f 3- -d ","
 v0.1
 node cut.js -f 3 filename
  --done-- ->create folders : src , test
-  ->create files : cut.js, cutLib.js ,testLib.js,package
+ --done-- ->create files : cut.js, cutLib.js ,testLib.js,package
   ->check connections: mocha ,nyc 
   ->modules : chai
 tasks:-
