@@ -16,8 +16,8 @@ describe("joinExtractedLines", function() {
 
 describe("extractFileContent", function() {
   it("should give extracted content of each line", function() {
-    const fileContent = ["a b c d e", "f g h i j", "k l m n o"];
-    const userOptions = { fields: 5 };
+    const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
+    const userOptions = { fields: 5, delimiter: "," };
     const actual = extractFileContent(fileContent, userOptions);
     const expected = ["e", "j", "o"];
     assert.deepStrictEqual(actual, expected);
@@ -45,8 +45,12 @@ describe("readFileContent", function() {
 
 describe("parseCmdLineArgs", function() {
   it("should give parsed commandLine args", function() {
-    const args = ["-f", "3", "./sampleText.js"];
-    const expected = { filePath: "./sampleText.js", fields: ["3"] };
+    const args = ["-f", "3", "-d", ",", "./sampleText.js"];
+    const expected = {
+      filePath: "./sampleText.js",
+      fields: ["3"],
+      delimiter: ","
+    };
     assert.deepStrictEqual(parseCmdLineArgs(args), expected);
   });
 });

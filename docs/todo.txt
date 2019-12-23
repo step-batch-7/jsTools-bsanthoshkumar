@@ -1,4 +1,4 @@
-node cut.js -f 3 filename
+node cut.js -f 3 -d "," filename
 node cut.js -f 3,5 -d "," filename
 node cut.js -f 3-5 -d "," filename
 node cut.js -f -3 -d "," filename
@@ -11,7 +11,7 @@ cat filename | node cut.js -f 3- -d ","
 
 ------------------------------------------------------
 v0.1
-node cut.js -f 3 filename
+node cut.js -f 3 -d "," filename
  --done-- ->create folders : src , test
  --done-- ->create files : cut.js, cutLib.js ,testLib.js,package
  --done-- ->check connections: mocha ,nyc 

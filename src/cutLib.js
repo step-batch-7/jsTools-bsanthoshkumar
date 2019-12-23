@@ -3,9 +3,9 @@ const joinExtractedLines = function(extrcatedLines) {
 };
 
 const extractFileContent = function(fileContent, userOptions) {
-  const { fields } = userOptions;
+  const { fields, delimiter } = userOptions;
   let extractedContent = fileContent.map(line => {
-    line = line.split(" ");
+    line = line.split(delimiter);
     return line[fields - 1];
   });
   return extractedContent;
@@ -18,8 +18,9 @@ const readFileContent = function(fileSys, path) {
 
 const parseCmdLineArgs = function(args) {
   const fields = args[args.indexOf("-f") + 1].split(",");
+  const delimiter = args[args.indexOf("-d") + 1];
   const filePath = args[args.length - 1];
-  return { filePath: filePath, fields: fields };
+  return { filePath: filePath, fields: fields, delimiter: delimiter };
 };
 
 module.exports = {
