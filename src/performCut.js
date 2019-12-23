@@ -8,12 +8,12 @@ const {
 const performCutOperation = function(args, fileSys) {
   const userOptions = parseCmdLineArgs(args);
   if (!fileSys.existsFile(userOptions.filePath)) {
-    error = `cut: ${userOptions.filePath}: No such File or Directory`;
-    return { error };
+    return { error: `cut: ${userOptions.filePath}: No such File or Directory` };
   }
   const fileContent = readFileContent(fileSys, userOptions.filePath);
   const extractedContent = extractFileContent(fileContent, userOptions);
-  const cutLines = joinExtractedLines(extractedContent);
+  if (extractedContent.error) return extractedContent.error;
+  const cutLines = joinExtractedLines(extractedContent.extractedLines);
   return { cutLines };
 };
 

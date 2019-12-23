@@ -3,13 +3,18 @@ const joinExtractedLines = function(extrcatedLines) {
 };
 
 const extractFieldOfLine = function(line) {
+  if (!line.includes(this.delimiter)) return line;
   line = line.split(this.delimiter);
   return line[this.fields[0] - 1];
 };
+
 const extractFileContent = function(fileContent, userOptions) {
-  const { fields, delimiter } = userOptions;
-  let extractedContent = fileContent.map(extractFieldOfLine.bind(userOptions));
-  return extractedContent;
+  const { fields } = userOptions;
+  if (+fields == 0)
+    return { error: "cut: [-cf] list: values may not include zero" };
+  if (isNaN(+fields)) return { error: "cut: [-cf] list: illegal list value" };
+  const extractedLines = fileContent.map(extractFieldOfLine.bind(userOptions));
+  return { extractedLines };
 };
 
 const readFileContent = function(fileSys, path) {
