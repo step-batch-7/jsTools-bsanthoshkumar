@@ -1,4 +1,4 @@
-node ./cut.js -f 2 sampleText.txt
+node ./cut.js -f 2 ./appTests/sampleText1.txt
 2
 12
 22
