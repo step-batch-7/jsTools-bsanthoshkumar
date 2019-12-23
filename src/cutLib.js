@@ -10,4 +10,10 @@ const extractFileContent = function(fileContent, userOptions) {
   });
   return extractedContent;
 };
-module.exports = { joinExtractedLines, extractFileContent };
+
+const readFileContent = function(readFile, path, encoding) {
+  const fileContent = readFile(path, encoding);
+  return fileContent.split("\n");
+};
+
+module.exports = { joinExtractedLines, extractFileContent, readFileContent };

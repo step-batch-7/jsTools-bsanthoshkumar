@@ -1,5 +1,9 @@
 const assert = require("assert");
-const { joinExtractedLines, extractFileContent } = require("../src/cutLib");
+const {
+  joinExtractedLines,
+  extractFileContent,
+  readFileContent
+} = require("../src/cutLib");
 
 describe("joinExtractedLines", function() {
   it("should give string format of given line", function() {
@@ -15,6 +19,24 @@ describe("extractFileContent", function() {
     const userOptions = { fields: 5 };
     const actual = extractFileContent(fileContent, userOptions);
     const expected = ["e", "j", "o"];
+    assert.deepStrictEqual(actual, expected);
+  });
+});
+
+describe("readFileContent", function() {
+  it("should give content of the file", function() {
+    const readFile = (filePath, encoding) => {
+      return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
+    };
+    const filePath = "./sampleText.js";
+    const actual = readFileContent(readFile, filePath, "utf8");
+    const expected = [
+      "1,2,3,4,5",
+      "11,12,13,14,15",
+      "21,22,23,24,25",
+      "31,32,33,34,35",
+      "41,42,43,44,45"
+    ];
     assert.deepStrictEqual(actual, expected);
   });
 });
