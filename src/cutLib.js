@@ -5,14 +5,14 @@ const joinExtractedLines = function(extrcatedLines) {
 const extractFileContent = function(fileContent, userOptions) {
   const { fields } = userOptions;
   let extractedContent = fileContent.map(line => {
-    line = line.split(",");
+    line = line.split(" ");
     return line[fields - 1];
   });
   return extractedContent;
 };
 
-const readFileContent = function(readFile, path, encoding) {
-  const fileContent = readFile(path, encoding);
+const readFileContent = function(fileSys, path) {
+  const fileContent = fileSys.readFile(path, fileSys.encoding);
   return fileContent.split("\n");
 };
 

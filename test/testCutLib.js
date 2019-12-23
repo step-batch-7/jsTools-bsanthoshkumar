@@ -16,7 +16,7 @@ describe("joinExtractedLines", function() {
 
 describe("extractFileContent", function() {
   it("should give extracted content of each line", function() {
-    const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
+    const fileContent = ["a b c d e", "f g h i j", "k l m n o"];
     const userOptions = { fields: 5 };
     const actual = extractFileContent(fileContent, userOptions);
     const expected = ["e", "j", "o"];
@@ -29,8 +29,9 @@ describe("readFileContent", function() {
     const readFile = (filePath, encoding) => {
       return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
     };
+    const fileSys = { readFile: readFile, encoding: "utf8" };
     const filePath = "./sampleText.js";
-    const actual = readFileContent(readFile, filePath, "utf8");
+    const actual = readFileContent(fileSys, filePath);
     const expected = [
       "1,2,3,4,5",
       "11,12,13,14,15",
