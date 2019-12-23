@@ -17,7 +17,7 @@ describe("joinExtractedLines", function() {
 describe("extractFileContent", function() {
   it("should give extracted content of each line for comma delimter", function() {
     const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
-    const userOptions = { fields: 5, delimiter: "," };
+    const userOptions = { fields: ["5"], delimiter: "," };
     const actual = extractFileContent(fileContent, userOptions);
     const expected = ["e", "j", "o"];
     assert.deepStrictEqual(actual, expected);
@@ -25,7 +25,7 @@ describe("extractFileContent", function() {
 
   it("should give extracted content of each line for hypen delimter", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
-    const userOptions = { fields: 3, delimiter: "-" };
+    const userOptions = { fields: ["3"], delimiter: "-" };
     const actual = extractFileContent(fileContent, userOptions);
     const expected = ["c", "h", "m"];
     assert.deepStrictEqual(actual, expected);

@@ -5,7 +5,7 @@ const {
   parseCmdLineArgs
 } = require("../src/cutLib");
 
-const performCutOperation = function(args, fileSys, result) {
+const performCutOperation = function(args, fileSys) {
   const userOptions = parseCmdLineArgs(args);
   if (!fileSys.existsFile(userOptions.filePath)) {
     error = `cut: ${userOptions.filePath}: No such File or Directory`;

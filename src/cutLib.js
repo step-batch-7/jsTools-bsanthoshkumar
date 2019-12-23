@@ -2,12 +2,13 @@ const joinExtractedLines = function(extrcatedLines) {
   return extrcatedLines.join("\n");
 };
 
+const extractFieldOfLine = function(line) {
+  line = line.split(this.delimiter);
+  return line[this.fields[0] - 1];
+};
 const extractFileContent = function(fileContent, userOptions) {
   const { fields, delimiter } = userOptions;
-  let extractedContent = fileContent.map(line => {
-    line = line.split(delimiter);
-    return line[fields - 1];
-  });
+  let extractedContent = fileContent.map(extractFieldOfLine.bind(userOptions));
   return extractedContent;
 };
 
