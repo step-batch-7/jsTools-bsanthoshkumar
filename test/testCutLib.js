@@ -2,7 +2,8 @@ const assert = require("assert");
 const {
   joinExtractedLines,
   extractFileContent,
-  readFileContent
+  readFileContent,
+  parseCmdLineArgs
 } = require("../src/cutLib");
 
 describe("joinExtractedLines", function() {
@@ -38,5 +39,13 @@ describe("readFileContent", function() {
       "41,42,43,44,45"
     ];
     assert.deepStrictEqual(actual, expected);
+  });
+});
+
+describe("parseCmdLineArgs", function() {
+  it("should give parsed commandLine args", function() {
+    const args = ["-f", "3", "./sampleText.js"];
+    const expected = { filePath: "./sampleText.js", fields: ["3"] };
+    assert.deepStrictEqual(parseCmdLineArgs(args), expected);
   });
 });

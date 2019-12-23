@@ -16,4 +16,15 @@ const readFileContent = function(readFile, path, encoding) {
   return fileContent.split("\n");
 };
 
-module.exports = { joinExtractedLines, extractFileContent, readFileContent };
+const parseCmdLineArgs = function(args) {
+  const fields = args[args.indexOf("-f") + 1].split(",");
+  const filePath = args[args.length - 1];
+  return { filePath: filePath, fields: fields };
+};
+
+module.exports = {
+  joinExtractedLines,
+  extractFileContent,
+  readFileContent,
+  parseCmdLineArgs
+};
