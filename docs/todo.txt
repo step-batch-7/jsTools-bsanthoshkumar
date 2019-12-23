@@ -17,7 +17,7 @@ node cut.js -f 3 filename
   ->check connections: mocha ,nyc 
   ->modules : chai
 tasks:-
-  parseExtractedLines => (joinedLines)
-  extractFileContent => (extractedLines)
+  --done-- joinExtractedLines => (joinedLines)
+  --done-- extractFileContent => (extractedLines)
   readFileContent => (fileContent)
   parseCmdLineArgs => (userOptions)
