@@ -19,7 +19,7 @@ const extractFileContent = (fileContent, userOptions) => {
   return { extractedLines };
 };
 
-const extractFieldOfLine = line => {
+const extractFieldOfLine = function(line) {
   if (!line.includes(this.delimiter)) return line;
   line = line.split(this.delimiter);
   return line[this.fields[0] - 1];
