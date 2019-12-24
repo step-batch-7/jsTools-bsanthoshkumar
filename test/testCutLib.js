@@ -101,19 +101,24 @@ describe("performCutOpertion", function() {
       existsFile: existsFile,
       encoding: "utf8"
     };
+    const resultOfCut = { cutLines: "", error: "" };
     const args = ["-f", "3", "-d", ",", "./sampleText.txt"];
-    const expected = { cutLines: "3\n13\n23\n33\n43" };
-    assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
+    const actual = performCutOperation(args, fileSys, resultOfCut);
+    const expected = { cutLines: "3\n13\n23\n33\n43", error: "" };
+    assert.deepStrictEqual(actual, expected);
   });
 
   it("should give error for wrong filePath", function() {
     const existsFile = filePath => false;
     const fileSys = { existsFile: existsFile };
     const args = ["-f", "3", "-d", ",", "./sampleText.txt"];
+    const resultOfCut = { cutLines: "", error: "" };
+    const actual = performCutOperation(args, fileSys, resultOfCut);
     const expected = {
-      error: `cut: ./sampleText.txt: No such File or Directory`
+      error: `cut: ./sampleText.txt: No such File or Directory`,
+      cutLines: ""
     };
-    assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
+    assert.deepStrictEqual(actual, expected);
   });
 
   it("should give error for given field is string", function() {
@@ -127,7 +132,12 @@ describe("performCutOpertion", function() {
       encoding: "utf8"
     };
     const args = ["-f", "abc", "-d", ",", "./sampleText.txt"];
-    const expected = { error: "cut: [-cf] list: illegal list value" };
-    assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
+    const resultOfCut = { cutLines: "", error: "" };
+    const actual = performCutOperation(args, fileSys, resultOfCut);
+    const expected = {
+      error: "cut: [-cf] list: illegal list value",
+      cutLines: ""
+    };
+    assert.deepStrictEqual(actual, expected);
   });
 });

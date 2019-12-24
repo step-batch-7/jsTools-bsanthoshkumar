@@ -7,9 +7,14 @@ const main = function() {
     existsFile: fs.existsSync,
     encoding: "utf8"
   };
-  const result = performCutOperation(process.argv.slice(2), fileSys);
-  result.cutLines && process.stdout.write(result.cutLines);
-  result.error && process.stderr.write(result.error);
+  let resultOfCut = { cutLines: "", error: "" };
+  resultOfCut = performCutOperation(
+    process.argv.slice(2),
+    fileSys,
+    resultOfCut
+  );
+  process.stdout.write(resultOfCut.cutLines);
+  process.stderr.write(resultOfCut.error);
 };
 
 main();

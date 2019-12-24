@@ -27,16 +27,21 @@ const extractFieldOfLine = function(line) {
 
 const joinExtractedLines = extrcatedLines => extrcatedLines.join("\n");
 
-const performCutOperation = (args, fileSys) => {
+const performCutOperation = (args, fileSys, resultOfCut) => {
   const userOptions = parseCmdLineArgs(args);
   const { filePath } = userOptions;
-  if (!fileSys.existsFile(filePath))
-    return { error: `cut: ${filePath}: No such File or Directory` };
+  if (!fileSys.existsFile(filePath)) {
+    resultOfCut.error = `cut: ${filePath}: No such File or Directory`;
+    return resultOfCut;
+  }
   const fileContent = readFileContent(fileSys, filePath);
   const extractedContent = extractFileContent(fileContent, userOptions);
-  if (extractedContent.error) return extractedContent;
-  const cutLines = joinExtractedLines(extractedContent.extractedLines);
-  return { cutLines };
+  if (extractedContent.error) {
+    resultOfCut.error = extractedContent.error;
+    return resultOfCut;
+  }
+  resultOfCut.cutLines = joinExtractedLines(extractedContent.extractedLines);
+  return resultOfCut;
 };
 
 module.exports = {
