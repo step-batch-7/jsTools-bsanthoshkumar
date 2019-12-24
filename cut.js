@@ -1,4 +1,4 @@
-const { performCutOperation } = require("./src/performCut");
+const { performCutOperation } = require("./src/cutLib");
 const fs = require("fs");
 
 const main = function() {
