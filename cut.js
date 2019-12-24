@@ -7,13 +7,13 @@ const main = function() {
     existsFile: fs.existsSync,
     encoding: "utf8"
   };
-  let resultOfCut = { cutLines: "", error: "" };
+  let resultOfCut = { error: "", lines: "" };
   resultOfCut = performCutOperation(
     process.argv.slice(2),
     fileSys,
     resultOfCut
   );
-  process.stdout.write(resultOfCut.cutLines);
+  process.stdout.write(resultOfCut.lines);
   process.stderr.write(resultOfCut.error);
 };
 

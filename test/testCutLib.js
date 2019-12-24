@@ -1,59 +1,38 @@
 const assert = require("assert");
 const {
-  joinExtractedLines,
   extractFileContent,
   readFileContent,
   parseCmdLineArgs,
   performCutOperation
 } = require("../src/cutLib");
 
-describe("joinExtractedLines", function() {
-  it("should give string format of given line", function() {
-    const extractedLines = ["abc", "def"];
-    const expected = "abc\ndef";
-    assert.deepStrictEqual(joinExtractedLines(extractedLines), expected);
-  });
-});
-
 describe("extractFileContent", function() {
   it("should give extracted content of each line for comma delimter", function() {
     const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
     const userOptions = { fields: ["5"], delimiter: "," };
-    const actual = extractFileContent(fileContent, userOptions);
-    const expected = { extractedLines: ["e", "j", "o"] };
+    const resultOfCut = { lines: "", error: "" };
+    const actual = extractFileContent(fileContent, userOptions, resultOfCut);
+    const expected = { lines: ["e", "j", "o"], error: "" };
     assert.deepStrictEqual(actual, expected);
   });
 
   it("should give extracted content of each line for hypen delimter", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     const userOptions = { fields: ["3"], delimiter: "-" };
-    const actual = extractFileContent(fileContent, userOptions);
-    const expected = { extractedLines: ["c", "h", "m"] };
-    assert.deepStrictEqual(actual, expected);
-  });
-
-  it("should give error message for given field value of 0", function() {
-    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
-    const userOptions = { fields: ["0"], delimiter: "-" };
-    const actual = extractFileContent(fileContent, userOptions);
-    const expected = { error: "cut: [-cf] list: values may not include zero" };
-    assert.deepStrictEqual(actual, expected);
-  });
-
-  it("should give error message for given field value of string", function() {
-    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
-    const userOptions = { fields: ["a"], delimiter: "-" };
-    const actual = extractFileContent(fileContent, userOptions);
-    const expected = { error: "cut: [-cf] list: illegal list value" };
+    const resultOfCut = { lines: "", error: "" };
+    const actual = extractFileContent(fileContent, userOptions, resultOfCut);
+    const expected = { lines: ["c", "h", "m"], error: "" };
     assert.deepStrictEqual(actual, expected);
   });
 
   it("should give whole line for given delimiter is not included", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     const userOptions = { fields: ["3"], delimiter: "," };
-    const actual = extractFileContent(fileContent, userOptions);
+    const resultOfCut = { lines: "", error: "" };
+    const actual = extractFileContent(fileContent, userOptions, resultOfCut);
     const expected = {
-      extractedLines: ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"]
+      lines: ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"],
+      error: ""
     };
     assert.deepStrictEqual(actual, expected);
   });
@@ -84,7 +63,8 @@ describe("parseCmdLineArgs", function() {
     const expected = {
       filePath: "./sampleText.js",
       fields: ["3"],
-      delimiter: ","
+      delimiter: ",",
+      isValidArgs: true
     };
     assert.deepStrictEqual(parseCmdLineArgs(args), expected);
   });
@@ -101,10 +81,10 @@ describe("performCutOpertion", function() {
       existsFile: existsFile,
       encoding: "utf8"
     };
-    const resultOfCut = { cutLines: "", error: "" };
+    const resultOfCut = { lines: "", error: "" };
     const args = ["-f", "3", "-d", ",", "./sampleText.txt"];
     const actual = performCutOperation(args, fileSys, resultOfCut);
-    const expected = { cutLines: "3\n13\n23\n33\n43", error: "" };
+    const expected = { lines: "3\n13\n23\n33\n43", error: "" };
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -112,11 +92,11 @@ describe("performCutOpertion", function() {
     const existsFile = filePath => false;
     const fileSys = { existsFile: existsFile };
     const args = ["-f", "3", "-d", ",", "./sampleText.txt"];
-    const resultOfCut = { cutLines: "", error: "" };
+    const resultOfCut = { lines: "", error: "" };
     const actual = performCutOperation(args, fileSys, resultOfCut);
     const expected = {
       error: `cut: ./sampleText.txt: No such File or Directory`,
-      cutLines: ""
+      lines: ""
     };
     assert.deepStrictEqual(actual, expected);
   });
@@ -132,11 +112,11 @@ describe("performCutOpertion", function() {
       encoding: "utf8"
     };
     const args = ["-f", "abc", "-d", ",", "./sampleText.txt"];
-    const resultOfCut = { cutLines: "", error: "" };
+    const resultOfCut = { lines: "", error: "" };
     const actual = performCutOperation(args, fileSys, resultOfCut);
     const expected = {
       error: "cut: [-cf] list: illegal list value",
-      cutLines: ""
+      lines: ""
     };
     assert.deepStrictEqual(actual, expected);
   });
