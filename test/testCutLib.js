@@ -30,6 +30,32 @@ describe("extractFileContent", function() {
     const expected = { extractedLines: ["c", "h", "m"] };
     assert.deepStrictEqual(actual, expected);
   });
+
+  it("should give error message for given field value of 0", function() {
+    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const userOptions = { fields: ["0"], delimiter: "-" };
+    const actual = extractFileContent(fileContent, userOptions);
+    const expected = { error: "cut: [-cf] list: values may not include zero" };
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it("should give error message for given field value of string", function() {
+    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const userOptions = { fields: ["a"], delimiter: "-" };
+    const actual = extractFileContent(fileContent, userOptions);
+    const expected = { error: "cut: [-cf] list: illegal list value" };
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  it("should give whole line for given delimiter is not included", function() {
+    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const userOptions = { fields: ["3"], delimiter: "," };
+    const actual = extractFileContent(fileContent, userOptions);
+    const expected = {
+      extractedLines: ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"]
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 });
 
 describe("readFileContent", function() {

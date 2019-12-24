@@ -12,7 +12,7 @@ const performCutOperation = function(args, fileSys) {
   }
   const fileContent = readFileContent(fileSys, userOptions.filePath);
   const extractedContent = extractFileContent(fileContent, userOptions);
-  if (extractedContent.error) return extractedContent.error;
+  if (extractedContent.error) return extractedContent;
   const cutLines = joinExtractedLines(extractedContent.extractedLines);
   return { cutLines };
 };

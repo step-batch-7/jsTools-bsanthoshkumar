@@ -26,4 +26,19 @@ describe("performCutOpertion", function() {
     };
     assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
   });
+
+  it("should give error for given field is string", function() {
+    const readFile = (filePath, encoding) => {
+      return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
+    };
+    const existsFile = filePath => true;
+    const fileSys = {
+      readFile: readFile,
+      existsFile: existsFile,
+      encoding: "utf8"
+    };
+    const args = ["-f", "abc", "-d", ",", "./sampleText.txt"];
+    const expected = { error: "cut: [-cf] list: illegal list value" };
+    assert.deepStrictEqual(performCutOperation(args, fileSys), expected);
+  });
 });
