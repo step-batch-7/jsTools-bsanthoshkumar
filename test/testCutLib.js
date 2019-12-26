@@ -12,7 +12,7 @@ describe("extractColumns", function() {
     const userOptions = { fields: ["5"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
     const actual = extractColumns(fileContent, userOptions, resultOfCut);
-    const expected = { lines: ["e", "j", "o"], error: "" };
+    const expected = ["e", "j", "o"];
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -21,7 +21,7 @@ describe("extractColumns", function() {
     const userOptions = { fields: ["3"], delimiter: "-" };
     const resultOfCut = { lines: "", error: "" };
     const actual = extractColumns(fileContent, userOptions, resultOfCut);
-    const expected = { lines: ["c", "h", "m"], error: "" };
+    const expected = ["c", "h", "m"];
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -30,10 +30,7 @@ describe("extractColumns", function() {
     const userOptions = { fields: ["3"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
     const actual = extractColumns(fileContent, userOptions, resultOfCut);
-    const expected = {
-      lines: ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"],
-      error: ""
-    };
+    const expected = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     assert.deepStrictEqual(actual, expected);
   });
 });
@@ -63,8 +60,7 @@ describe("parseCmdLineArgs", function() {
     const expected = {
       filePath: "./sampleText.js",
       fields: ["3"],
-      delimiter: ",",
-      isValidArgs: true
+      delimiter: ","
     };
     assert.deepStrictEqual(parseCmdLineArgs(args), expected);
   });

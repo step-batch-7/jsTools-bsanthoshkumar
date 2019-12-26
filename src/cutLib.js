@@ -1,42 +1,35 @@
-const parseCmdLineArgs = (args, resultOfCut) => {
+const parseCmdLineArgs = args => {
   const fields = args[args.indexOf("-f") + 1].split(",");
   const delimiter = args[args.indexOf("-d") + 1];
   const filePath = args[args.length - 1];
-  if (+fields == 0) {
-    resultOfCut.error = "cut: [-cf] list: values may not include zero";
-    return { resultOfCut, isValidArgs: false };
-  }
-  if (isNaN(+fields)) {
-    resultOfCut.error = "cut: [-cf] list: illegal list value";
-    return { resultOfCut, isValidArgs: false };
-  }
-  return { fields, delimiter, filePath, isValidArgs: true };
+  const fieldZeroError = "cut: [-cf] list: values may not include zero";
+  const fieldStringError = "cut: [-cf] list: illegal list value";
+  if (+fields == 0) return { error: fieldZeroError, lines: "" };
+  if (isNaN(+fields)) return { error: fieldStringError, lines: "" };
+  return { fields, delimiter, filePath };
 };
 
 const readFileContent = (fs, path) => fs.readFileSync(path, "utf8").split("\n");
 
-const extractColumns = (fileContent, userOptions, resultOfCut) => {
+const extractColumns = (fileContent, userOptions) => {
   const { fields, delimiter } = userOptions;
-  resultOfCut.lines = fileContent.map(line => {
+  let lines = fileContent.map(line => {
     if (!line.includes(delimiter)) return line;
     line = line.split(delimiter);
     return line[fields[0] - 1];
   });
-  return resultOfCut;
+  return lines;
 };
 
-const cut = (args, fs, resultOfCut) => {
-  const userOptions = parseCmdLineArgs(args, resultOfCut);
-  if (!userOptions.isValidArgs) return userOptions.resultOfCut;
+const cut = (args, fs) => {
+  const userOptions = parseCmdLineArgs(args);
+  if (userOptions.error) return userOptions;
   const { filePath } = userOptions;
-  if (!fs.existsSync(filePath)) {
-    resultOfCut.error = `cut: ${filePath}: No such File or Directory`;
-    return resultOfCut;
-  }
+  if (!fs.existsSync(filePath))
+    return { error: `cut: ${filePath}: No such File or Directory`, lines: "" };
   const fileContent = readFileContent(fs, filePath);
-  resultOfCut = extractColumns(fileContent, userOptions, resultOfCut);
-  resultOfCut.lines = resultOfCut.lines.join("\n");
-  return resultOfCut;
+  let lines = extractColumns(fileContent, userOptions).join("\n");
+  return { lines, error: "" };
 };
 
 module.exports = {
