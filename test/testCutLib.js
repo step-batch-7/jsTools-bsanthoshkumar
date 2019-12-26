@@ -1,17 +1,17 @@
 const assert = require("assert");
 const {
-  extractColumns,
+  extractColumnsOfLine,
   readFileContent,
   parseCmdLineArgs,
   cut
 } = require("../src/cutLib");
 
-describe("extractColumns", function() {
+describe("extractColumnsOfLine", function() {
   it("should give extracted content of each line for comma delimter", function() {
     const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
     const userOptions = { fields: ["5"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
-    const actual = extractColumns(fileContent, userOptions, resultOfCut);
+    const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
     const expected = ["e", "j", "o"];
     assert.deepStrictEqual(actual, expected);
   });
@@ -20,7 +20,7 @@ describe("extractColumns", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     const userOptions = { fields: ["3"], delimiter: "-" };
     const resultOfCut = { lines: "", error: "" };
-    const actual = extractColumns(fileContent, userOptions, resultOfCut);
+    const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
     const expected = ["c", "h", "m"];
     assert.deepStrictEqual(actual, expected);
   });
@@ -29,7 +29,7 @@ describe("extractColumns", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     const userOptions = { fields: ["3"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
-    const actual = extractColumns(fileContent, userOptions, resultOfCut);
+    const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
     const expected = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     assert.deepStrictEqual(actual, expected);
   });

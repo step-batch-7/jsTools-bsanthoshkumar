@@ -1,7 +1,7 @@
-const parseCmdLineArgs = args => {
-  const fields = args[args.indexOf("-f") + 1].split(",");
-  const delimiter = args[args.indexOf("-d") + 1];
-  const filePath = args[args.length - 1];
+const parseCmdLineArgs = cmdLineArgs => {
+  const fields = cmdLineArgs[cmdLineArgs.indexOf("-f") + 1].split(",");
+  const delimiter = cmdLineArgs[cmdLineArgs.indexOf("-d") + 1];
+  const filePath = cmdLineArgs[cmdLineArgs.length - 1];
   const fieldZeroError = "cut: [-cf] list: values may not include zero";
   const fieldStringError = "cut: [-cf] list: illegal list value";
   if (+fields == 0) return { error: fieldZeroError, lines: "" };
@@ -11,7 +11,7 @@ const parseCmdLineArgs = args => {
 
 const readFileContent = (fs, path) => fs.readFileSync(path, "utf8").split("\n");
 
-const extractColumns = (fileContent, userOptions) => {
+const extractColumnsOfLine = (fileContent, userOptions) => {
   const { fields, delimiter } = userOptions;
   let lines = fileContent.map(line => {
     if (!line.includes(delimiter)) return line;
@@ -21,19 +21,20 @@ const extractColumns = (fileContent, userOptions) => {
   return lines;
 };
 
-const cut = (args, fs) => {
-  const userOptions = parseCmdLineArgs(args);
-  if (userOptions.error) return userOptions;
+const cut = (cmdLineArgs, fs) => {
+  const userOptions = parseCmdLineArgs(cmdLineArgs);
+  if (userOptions.error) return { error: userOptions.error, lines: "" };
   const { filePath } = userOptions;
-  if (!fs.existsSync(filePath))
+  if (!fs.existsSync(filePath)) {
     return { error: `cut: ${filePath}: No such File or Directory`, lines: "" };
+  }
   const fileContent = readFileContent(fs, filePath);
-  let lines = extractColumns(fileContent, userOptions).join("\n");
+  let lines = extractColumnsOfLine(fileContent, userOptions).join("\n");
   return { lines, error: "" };
 };
 
 module.exports = {
-  extractColumns,
+  extractColumnsOfLine,
   readFileContent,
   parseCmdLineArgs,
   cut
