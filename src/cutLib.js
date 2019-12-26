@@ -13,12 +13,9 @@ const parseCmdLineArgs = (args, resultOfCut) => {
   return { fields, delimiter, filePath, isValidArgs: true };
 };
 
-const readFileContent = (fileSys, path) => {
-  const fileContent = fileSys.readFile(path, fileSys.encoding);
-  return fileContent.split("\n");
-};
+const readFileContent = (fs, path) => fs.readFileSync(path, "utf8").split("\n");
 
-const extractFileContent = (fileContent, userOptions, resultOfCut) => {
+const extractColumns = (fileContent, userOptions, resultOfCut) => {
   const { fields, delimiter } = userOptions;
   resultOfCut.lines = fileContent.map(line => {
     if (!line.includes(delimiter)) return line;
@@ -28,23 +25,23 @@ const extractFileContent = (fileContent, userOptions, resultOfCut) => {
   return resultOfCut;
 };
 
-const performCutOperation = (args, fileSys, resultOfCut) => {
+const cut = (args, fs, resultOfCut) => {
   const userOptions = parseCmdLineArgs(args, resultOfCut);
   if (!userOptions.isValidArgs) return userOptions.resultOfCut;
   const { filePath } = userOptions;
-  if (!fileSys.existsFile(filePath)) {
+  if (!fs.existsSync(filePath)) {
     resultOfCut.error = `cut: ${filePath}: No such File or Directory`;
     return resultOfCut;
   }
-  const fileContent = readFileContent(fileSys, filePath);
-  resultOfCut = extractFileContent(fileContent, userOptions, resultOfCut);
+  const fileContent = readFileContent(fs, filePath);
+  resultOfCut = extractColumns(fileContent, userOptions, resultOfCut);
   resultOfCut.lines = resultOfCut.lines.join("\n");
   return resultOfCut;
 };
 
 module.exports = {
-  extractFileContent,
+  extractColumns,
   readFileContent,
   parseCmdLineArgs,
-  performCutOperation
+  cut
 };

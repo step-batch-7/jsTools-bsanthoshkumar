@@ -1,17 +1,17 @@
 const assert = require("assert");
 const {
-  extractFileContent,
+  extractColumns,
   readFileContent,
   parseCmdLineArgs,
-  performCutOperation
+  cut
 } = require("../src/cutLib");
 
-describe("extractFileContent", function() {
+describe("extractColumns", function() {
   it("should give extracted content of each line for comma delimter", function() {
     const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
     const userOptions = { fields: ["5"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
-    const actual = extractFileContent(fileContent, userOptions, resultOfCut);
+    const actual = extractColumns(fileContent, userOptions, resultOfCut);
     const expected = { lines: ["e", "j", "o"], error: "" };
     assert.deepStrictEqual(actual, expected);
   });
@@ -20,7 +20,7 @@ describe("extractFileContent", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     const userOptions = { fields: ["3"], delimiter: "-" };
     const resultOfCut = { lines: "", error: "" };
-    const actual = extractFileContent(fileContent, userOptions, resultOfCut);
+    const actual = extractColumns(fileContent, userOptions, resultOfCut);
     const expected = { lines: ["c", "h", "m"], error: "" };
     assert.deepStrictEqual(actual, expected);
   });
@@ -29,7 +29,7 @@ describe("extractFileContent", function() {
     const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     const userOptions = { fields: ["3"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
-    const actual = extractFileContent(fileContent, userOptions, resultOfCut);
+    const actual = extractColumns(fileContent, userOptions, resultOfCut);
     const expected = {
       lines: ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"],
       error: ""
@@ -40,12 +40,12 @@ describe("extractFileContent", function() {
 
 describe("readFileContent", function() {
   it("should give content of the file", function() {
-    const readFile = (filePath, encoding) => {
+    const readFileSync = (filePath, encoding) => {
       return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
     };
-    const fileSys = { readFile: readFile, encoding: "utf8" };
+    const fs = { readFileSync, encoding: "utf8" };
     const filePath = "./sampleText.js";
-    const actual = readFileContent(fileSys, filePath);
+    const actual = readFileContent(fs, filePath);
     const expected = [
       "1,2,3,4,5",
       "11,12,13,14,15",
@@ -70,30 +70,26 @@ describe("parseCmdLineArgs", function() {
   });
 });
 
-describe("performCutOpertion", function() {
+describe("cut", function() {
   it("should give particular field of given file", function() {
-    const readFile = (filePath, encoding) => {
+    const readFileSync = (filePath, encoding) => {
       return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
     };
-    const existsFile = filePath => true;
-    const fileSys = {
-      readFile: readFile,
-      existsFile: existsFile,
-      encoding: "utf8"
-    };
+    const existsSync = filePath => true;
+    const fileSys = { readFileSync, existsSync };
     const resultOfCut = { lines: "", error: "" };
     const args = ["-f", "3", "-d", ",", "./sampleText.txt"];
-    const actual = performCutOperation(args, fileSys, resultOfCut);
+    const actual = cut(args, fileSys, resultOfCut);
     const expected = { lines: "3\n13\n23\n33\n43", error: "" };
     assert.deepStrictEqual(actual, expected);
   });
 
   it("should give error for wrong filePath", function() {
-    const existsFile = filePath => false;
-    const fileSys = { existsFile: existsFile };
+    const existsSync = filePath => false;
+    const fs = { existsSync };
     const args = ["-f", "3", "-d", ",", "./sampleText.txt"];
     const resultOfCut = { lines: "", error: "" };
-    const actual = performCutOperation(args, fileSys, resultOfCut);
+    const actual = cut(args, fs, resultOfCut);
     const expected = {
       error: `cut: ./sampleText.txt: No such File or Directory`,
       lines: ""
@@ -102,18 +98,14 @@ describe("performCutOpertion", function() {
   });
 
   it("should give error for given field is string", function() {
-    const readFile = (filePath, encoding) => {
+    const readFileSync = (filePath, encoding) => {
       return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
     };
-    const existsFile = filePath => true;
-    const fileSys = {
-      readFile: readFile,
-      existsFile: existsFile,
-      encoding: "utf8"
-    };
+    const existsSync = filePath => true;
+    const fs = { readFileSync, existsSync };
     const args = ["-f", "abc", "-d", ",", "./sampleText.txt"];
     const resultOfCut = { lines: "", error: "" };
-    const actual = performCutOperation(args, fileSys, resultOfCut);
+    const actual = cut(args, fs, resultOfCut);
     const expected = {
       error: "cut: [-cf] list: illegal list value",
       lines: ""
