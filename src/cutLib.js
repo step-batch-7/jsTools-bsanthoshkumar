@@ -1,7 +1,5 @@
 const parseCmdLineArgs = cmdLineArgs => {
-  const fields = cmdLineArgs[cmdLineArgs.indexOf("-f") + 1].split(",");
-  const delimiter = cmdLineArgs[cmdLineArgs.indexOf("-d") + 1];
-  const filePath = cmdLineArgs[cmdLineArgs.length - 1];
+  const [, fields, , delimiter, filePath] = cmdLineArgs;
   const fieldZeroError = "cut: [-cf] list: values may not include zero";
   const fieldStringError = "cut: [-cf] list: illegal list value";
   if (+fields == 0) return { error: fieldZeroError, lines: "" };
@@ -9,10 +7,11 @@ const parseCmdLineArgs = cmdLineArgs => {
   return { fields, delimiter, filePath };
 };
 
-const readFileContent = (fs, path) => fs.readFileSync(path, "utf8").split("\n");
+const readFileContent = (fs, path) => fs.readFileSync(path, "utf8");
 
 const extractColumnsOfLine = (fileContent, userOptions) => {
   const { fields, delimiter } = userOptions;
+  fileContent = fileContent.split("\n");
   let lines = fileContent.map(line => {
     if (!line.includes(delimiter)) return line;
     line = line.split(delimiter);

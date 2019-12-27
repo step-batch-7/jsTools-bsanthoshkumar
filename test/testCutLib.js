@@ -8,7 +8,7 @@ const {
 
 describe("extractColumnsOfLine", function() {
   it("should give extracted content of each line for comma delimter", function() {
-    const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
+    const fileContent = "a,b,c,d,e\nf,g,h,i,j\nk,l,m,n,o";
     const userOptions = { fields: ["5"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
     const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
@@ -17,7 +17,7 @@ describe("extractColumnsOfLine", function() {
   });
 
   it("should give extracted content of each line for hypen delimter", function() {
-    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const fileContent = "a-b-c-d-e\nf-g-h-i-j\nk-l-m-n-o";
     const userOptions = { fields: ["3"], delimiter: "-" };
     const resultOfCut = { lines: "", error: "" };
     const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
@@ -26,7 +26,7 @@ describe("extractColumnsOfLine", function() {
   });
 
   it("should give whole line for given delimiter is not included", function() {
-    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const fileContent = "a-b-c-d-e\nf-g-h-i-j\nk-l-m-n-o";
     const userOptions = { fields: ["3"], delimiter: "," };
     const resultOfCut = { lines: "", error: "" };
     const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
@@ -43,13 +43,8 @@ describe("readFileContent", function() {
     const fs = { readFileSync, encoding: "utf8" };
     const filePath = "./sampleText.js";
     const actual = readFileContent(fs, filePath);
-    const expected = [
-      "1,2,3,4,5",
-      "11,12,13,14,15",
-      "21,22,23,24,25",
-      "31,32,33,34,35",
-      "41,42,43,44,45"
-    ];
+    const expected =
+      "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
     assert.deepStrictEqual(actual, expected);
   });
 });
@@ -59,8 +54,26 @@ describe("parseCmdLineArgs", function() {
     const args = ["-f", "3", "-d", ",", "./sampleText.js"];
     const expected = {
       filePath: "./sampleText.js",
-      fields: ["3"],
+      fields: "3",
       delimiter: ","
+    };
+    assert.deepStrictEqual(parseCmdLineArgs(args), expected);
+  });
+
+  it("should give error for commandLine args of fields 0", function() {
+    const args = ["-f", "0", "-d", ",", "./sampleText.js"];
+    const expected = {
+      error: "cut: [-cf] list: values may not include zero",
+      lines: ""
+    };
+    assert.deepStrictEqual(parseCmdLineArgs(args), expected);
+  });
+
+  it("should give error for commandLine args of fields 0", function() {
+    const args = ["-f", "a", "-d", ",", "./sampleText.js"];
+    const expected = {
+      error: "cut: [-cf] list: illegal list value",
+      lines: ""
     };
     assert.deepStrictEqual(parseCmdLineArgs(args), expected);
   });
