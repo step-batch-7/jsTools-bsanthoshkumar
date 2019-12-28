@@ -7,11 +7,13 @@ const parseCmdLineArgs = cmdLineArgs => {
   return { fields, delimiter, filePath };
 };
 
-const readFileContent = (fs, path) => fs.readFileSync(path, "utf8");
+const readFileContent = (fs, path) => {
+  if (fs.existsSync(path))
+    return { fileContent: fs.readFileSync(path, "utf8").split("\n") };
+  return { fileError: `cut: ${path}: No such File or Directory`, lines: "" };
+};
 
-const extractColumnsOfLine = (fileContent, userOptions) => {
-  const { fields, delimiter } = userOptions;
-  fileContent = fileContent.split("\n");
+const extractColumnsOfLine = (fileContent, fields, delimiter) => {
   let lines = fileContent.map(line => {
     if (!line.includes(delimiter)) return line;
     line = line.split(delimiter);
@@ -21,14 +23,11 @@ const extractColumnsOfLine = (fileContent, userOptions) => {
 };
 
 const cut = (cmdLineArgs, fs) => {
-  const userOptions = parseCmdLineArgs(cmdLineArgs);
-  if (userOptions.error) return { error: userOptions.error, lines: "" };
-  const { filePath } = userOptions;
-  if (!fs.existsSync(filePath)) {
-    return { error: `cut: ${filePath}: No such File or Directory`, lines: "" };
-  }
-  const fileContent = readFileContent(fs, filePath);
-  let lines = extractColumnsOfLine(fileContent, userOptions).join("\n");
+  let { fields, delimiter, filePath, error } = parseCmdLineArgs(cmdLineArgs);
+  if (error) return { error: error, lines: "" };
+  let { fileContent, fileError } = readFileContent(fs, filePath);
+  if (fileError) return { error: fileError, lines: "" };
+  lines = extractColumnsOfLine(fileContent, fields, delimiter).join("\n");
   return { lines, error: "" };
 };
 

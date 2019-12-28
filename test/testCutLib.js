@@ -8,28 +8,28 @@ const {
 
 describe("extractColumnsOfLine", function() {
   it("should give extracted content of each line for comma delimter", function() {
-    const fileContent = "a,b,c,d,e\nf,g,h,i,j\nk,l,m,n,o";
-    const userOptions = { fields: ["5"], delimiter: "," };
-    const resultOfCut = { lines: "", error: "" };
-    const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
+    const fileContent = ["a,b,c,d,e", "f,g,h,i,j", "k,l,m,n,o"];
+    const fields = ["5"];
+    const delimiter = ",";
+    const actual = extractColumnsOfLine(fileContent, fields, delimiter);
     const expected = ["e", "j", "o"];
     assert.deepStrictEqual(actual, expected);
   });
 
   it("should give extracted content of each line for hypen delimter", function() {
-    const fileContent = "a-b-c-d-e\nf-g-h-i-j\nk-l-m-n-o";
-    const userOptions = { fields: ["3"], delimiter: "-" };
-    const resultOfCut = { lines: "", error: "" };
-    const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
+    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const fields = ["3"];
+    const delimiter = "-";
+    const actual = extractColumnsOfLine(fileContent, fields, delimiter);
     const expected = ["c", "h", "m"];
     assert.deepStrictEqual(actual, expected);
   });
 
   it("should give whole line for given delimiter is not included", function() {
-    const fileContent = "a-b-c-d-e\nf-g-h-i-j\nk-l-m-n-o";
-    const userOptions = { fields: ["3"], delimiter: "," };
-    const resultOfCut = { lines: "", error: "" };
-    const actual = extractColumnsOfLine(fileContent, userOptions, resultOfCut);
+    const fileContent = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
+    const fields = ["3"];
+    const delimiter = ",";
+    const actual = extractColumnsOfLine(fileContent, fields, delimiter);
     const expected = ["a-b-c-d-e", "f-g-h-i-j", "k-l-m-n-o"];
     assert.deepStrictEqual(actual, expected);
   });
@@ -40,11 +40,19 @@ describe("readFileContent", function() {
     const readFileSync = (filePath, encoding) => {
       return "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
     };
-    const fs = { readFileSync, encoding: "utf8" };
+    const existsSync = filePath => true;
+    const fs = { readFileSync, existsSync, encoding: "utf8" };
     const filePath = "./sampleText.js";
     const actual = readFileContent(fs, filePath);
-    const expected =
-      "1,2,3,4,5\n11,12,13,14,15\n21,22,23,24,25\n31,32,33,34,35\n41,42,43,44,45";
+    const expected = {
+      fileContent: [
+        "1,2,3,4,5",
+        "11,12,13,14,15",
+        "21,22,23,24,25",
+        "31,32,33,34,35",
+        "41,42,43,44,45"
+      ]
+    };
     assert.deepStrictEqual(actual, expected);
   });
 });
