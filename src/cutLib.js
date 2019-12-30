@@ -10,13 +10,6 @@ const parseCmdLineArgs = userOptions => {
   return { fields, delimiter, filePath };
 };
 
-const readFileContent = (fs, path) => {
-  if (fs.existsSync(path)) {
-    return { fileContent: fs.readFileSync(path, 'utf8').split('\n') };
-  }
-  return { fileError: `cut: ${path}: No such File or Directory` };
-};
-
 const extractColumnsOfLine = (fileContent, fields, delimiter) => {
   fields = --fields;
   const lines = fileContent.map(line => {
@@ -31,6 +24,5 @@ const extractColumnsOfLine = (fileContent, fields, delimiter) => {
 
 module.exports = {
   extractColumnsOfLine,
-  readFileContent,
   parseCmdLineArgs
 };

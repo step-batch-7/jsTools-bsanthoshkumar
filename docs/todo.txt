@@ -25,8 +25,8 @@ tasks:-
 v0.2
 cat filename | node cut.js -f 3 -d " "
 tasks:-
-  pullout the sudo main into seperate file
-  to change readFileSync to createReadStream in cut(sudo main)
-  to remove readFileContent function and its testcases
-  to modify and add test cases for cut (sudo main)
-  pullout the stdout statements into function send that function as callback to cut(sudo main)
+--done--  pullout the sudo main into seperate file
+--done--  to change readFileSync to createReadStream in cut(sudo main)
+--done--  to remove readFileContent function and its testcases
+--partially done--  to modify and add test cases for cut (sudo main)
+--done--  pullout the stdout statements into function send that function as callback to cut(sudo main)

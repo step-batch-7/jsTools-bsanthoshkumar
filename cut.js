@@ -1,12 +1,17 @@
 'use strict';
+const { createReadStream } = require('fs');
+const { stdin, stdout, stderr } = process;
 const cut = require('./src/performCut');
-const fs = require('fs');
+
 const userOptionsStartIndex = 2;
 
+const write = resultOfCut => {
+  stdout.write(resultOfCut.lines);
+  stderr.write(resultOfCut.error);
+};
+
 const main = function(userOptions) {
-  const resultOfCut = cut(userOptions, fs);
-  process.stdout.write(resultOfCut.lines);
-  process.stderr.write(resultOfCut.error);
+  cut(userOptions, { createReadStream, stdin }, write);
 };
 
 main(process.argv.slice(userOptionsStartIndex));
