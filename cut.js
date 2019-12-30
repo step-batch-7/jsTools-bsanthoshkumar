@@ -1,7 +1,7 @@
 'use strict';
 const { createReadStream } = require('fs');
 const { stdin, stdout, stderr } = process;
-const cut = require('./src/performCut');
+const { cut } = require('./src/performCut');
 
 const userOptionsStartIndex = 2;
 

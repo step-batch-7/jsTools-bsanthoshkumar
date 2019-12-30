@@ -1,2 +1,2 @@
 node ./cut.js -f 2 -d "," ./appTests/sampleText.txt
-cut: ./appTests/sampleText.txt: No such File or Directory
+cut: ./appTests/sampleText.txt: No such file or directory

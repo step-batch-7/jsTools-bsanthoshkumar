@@ -1,5 +1,14 @@
 const { parseCmdLineArgs, extractColumnsOfLine } = require('./cutLib');
 
+const getErrorMessage = (errcode, filePath) => {
+  const errorMessages = {
+    EACCES: `cut: ${filePath}: Permission denied`,
+    ENOENT: `cut: ${filePath}: No such file or directory`,
+    EISDIR: `cut: ${filePath}: Is a directory`
+  };
+  return errorMessages[errcode];
+};
+
 const cut = (userOptions, { createReadStream, stdin }, write) => {
   const { fields, delimiter, filePath, error } = parseCmdLineArgs(userOptions);
   if (error) {
@@ -9,10 +18,7 @@ const cut = (userOptions, { createReadStream, stdin }, write) => {
   const inputStream = filePath ? createReadStream(filePath) : stdin;
   inputStream.setEncoding('utf8');
   inputStream.on('error', error =>
-    write({
-      error: `cut: ${filePath}: No such File or Directory`,
-      lines: ''
-    })
+    write({ error: getErrorMessage(error.code, filePath), lines: '' })
   );
   inputStream.on('data', data => {
     const content = data.split('\n');
@@ -24,4 +30,4 @@ const cut = (userOptions, { createReadStream, stdin }, write) => {
   inputStream.on('end', () => {});
 };
 
-module.exports = cut;
+module.exports = { cut, getErrorMessage };
