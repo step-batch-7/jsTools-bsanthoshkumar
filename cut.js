@@ -1,5 +1,5 @@
 'use strict';
-const { cut } = require('./src/cutLib');
+const cut = require('./src/performCut');
 const fs = require('fs');
 const userOptionsStartIndex = 2;
 
