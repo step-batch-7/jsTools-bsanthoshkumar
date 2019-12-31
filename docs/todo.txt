@@ -28,5 +28,6 @@ tasks:-
 --done--  pullout the sudo main into seperate file
 --done--  to change readFileSync to createReadStream in cut(sudo main)
 --done--  to remove readFileContent function and its testcases
---partially done--  to modify and add test cases for cut (sudo main)
+--done--  to modify and add test cases for cut (sudo main)
 --done--  pullout the stdout statements into function send that function as callback to cut(sudo main)
+to add appTests
