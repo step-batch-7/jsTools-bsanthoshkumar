@@ -23,6 +23,45 @@ describe('cut', function() {
     cut(userOptions, {}, callBack);
     assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
   });
+
+  it('should give error for file not present ', function() {
+    const error = 'cut: ./a.txt: No such file or directory';
+    const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
+    const createReadStream = sinon.fake.returns(readStream);
+    const callBack = sinon.spy();
+    cut(['-f', '2', '-d', ',', './a.txt'], { createReadStream }, callBack);
+    readStream.on.firstCall.args[1]({ code: 'ENOENT' });
+    assert(createReadStream.calledWith('./a.txt'));
+    assert.strictEqual(readStream.on.firstCall.args[0], 'error');
+    assert.strictEqual(readStream.on.callCount, 2);
+    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+  });
+
+  it('should give error for a directory ', function() {
+    const error = 'cut: ./appTests: Is a directory';
+    const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
+    const createReadStream = sinon.fake.returns(readStream);
+    const callBack = sinon.spy();
+    cut(['-f', '2', '-d', ',', './appTests'], { createReadStream }, callBack);
+    readStream.on.firstCall.args[1]({ code: 'EISDIR' });
+    assert(createReadStream.calledWith('./appTests'));
+    assert.strictEqual(readStream.on.firstCall.args[0], 'error');
+    assert.strictEqual(readStream.on.callCount, 2);
+    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+  });
+
+  it('should give error for file having no reading permissions', function() {
+    const error = 'cut: ./a.txt: Permission denied';
+    const readStream = { setEncoding: sinon.fake(), on: sinon.fake() };
+    const createReadStream = sinon.fake.returns(readStream);
+    const callBack = sinon.spy();
+    cut(['-f', '2', '-d', ',', './a.txt'], { createReadStream }, callBack);
+    readStream.on.firstCall.args[1]({ code: 'EACCES' });
+    assert(createReadStream.calledWith('./a.txt'));
+    assert.strictEqual(readStream.on.firstCall.args[0], 'error');
+    assert.strictEqual(readStream.on.callCount, 2);
+    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+  });
 });
 
 describe('getErrorMessage', function() {
