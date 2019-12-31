@@ -24,11 +24,11 @@
   },
   "homepage": "https://github.com/step-batch-7/jsTools-bsanthoshkumar#readme",
   "dependencies": {
-    "chai": "^4.2.0"
+    "chai": "^4.2.0",
+    "growl": "^1.10.5"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "growl": "^1.10.5",
     "sinon": "^8.0.1"
   }
 }
