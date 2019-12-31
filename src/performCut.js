@@ -22,10 +22,8 @@ const cut = (userOptions, { createReadStream, stdin }, write) => {
   );
   inputStream.on('data', data => {
     const content = data.split('\n');
-    write({
-      lines: extractColumnsOfLine(content, fields, delimiter).join('\n'),
-      error: ''
-    });
+    const lines = extractColumnsOfLine(content, fields, delimiter).join('\n');
+    write({ lines, error: '' });
   });
 };
 
