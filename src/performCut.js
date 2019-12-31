@@ -9,21 +9,21 @@ const getErrorMessage = (errcode, filePath) => {
   return errorMessages[errcode];
 };
 
-const cut = (userOptions, { createReadStream, createStdin }, write) => {
+const cut = (userOptions, { createReadStream, createStdin }, onComplete) => {
   const { fields, delimiter, filePath, error } = parseCmdLineArgs(userOptions);
   if (error) {
-    write({ error: error, lines: '' });
+    onComplete({ error: error, lines: '' });
     return;
   }
   const inputStream = filePath ? createReadStream(filePath) : createStdin();
   inputStream.setEncoding('utf8');
   inputStream.on('error', error =>
-    write({ error: getErrorMessage(error.code, filePath), lines: '' })
+    onComplete({ error: getErrorMessage(error.code, filePath), lines: '' })
   );
   inputStream.on('data', data => {
     const content = data.split('\n');
     const lines = extractColumnsOfLine(content, fields, delimiter).join('\n');
-    write({ lines, error: '' });
+    onComplete({ lines, error: '' });
   });
 };
 

@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "allTests": "./runAppTests.sh appTests/*.test && mocha"
+    "allTests": "./runAppTests.sh appTests/*.test && mocha",
+    "getLinter": "curl https://raw.githubusercontent.com/blpabhishek/eslintrc-config/master/.eslintrc.json -o .eslintrc.json"
   },
   "repository": {
     "type": "git",
