@@ -8,9 +8,11 @@ const write = resultOfCut => {
   stderr.write(resultOfCut.error);
 };
 
+const createStdin = () => stdin;
+
 const main = function(cmdLineArgs) {
   const [, , ...userOptions] = cmdLineArgs;
-  cut(userOptions, { createReadStream, stdin }, write);
+  cut(userOptions, { createReadStream, createStdin }, write);
 };
 
 main(process.argv);

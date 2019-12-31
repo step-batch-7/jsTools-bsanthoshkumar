@@ -16,6 +16,18 @@ describe('cut', function() {
     assert(callBack.calledOnceWithExactly({ lines: 'c:d\n3\nc', error: '' }));
   });
 
+  it('should give particular field of all lines for standard input', () => {
+    const userOptions = ['-f', '3', '-d', ','];
+    const stdin = { setEncoding: sinon.fake(), on: sinon.fake() };
+    const callBack = sinon.spy();
+    const createStdin = () => stdin;
+    cut(userOptions, { createStdin }, callBack);
+    stdin.on.secondCall.args[1]('a:b,b:c,c:d,d:e,e:f\n1,2,3,4\na,b,c,d');
+    assert.strictEqual(stdin.on.secondCall.args[0], 'data');
+    assert.strictEqual(stdin.on.callCount, 2);
+    assert(callBack.calledOnceWithExactly({ lines: 'c:d\n3\nc', error: '' }));
+  });
+
   it('should give error for invalid user options', function() {
     const userOptions = ['-f', '0', '-d', ',', './sampleText.txt'];
     const error = 'cut: [-cf] list: values may not include zero';

@@ -9,13 +9,13 @@ const getErrorMessage = (errcode, filePath) => {
   return errorMessages[errcode];
 };
 
-const cut = (userOptions, { createReadStream, stdin }, write) => {
+const cut = (userOptions, { createReadStream, createStdin }, write) => {
   const { fields, delimiter, filePath, error } = parseCmdLineArgs(userOptions);
   if (error) {
     write({ error: error, lines: '' });
     return;
   }
-  const inputStream = filePath ? createReadStream(filePath) : stdin;
+  const inputStream = filePath ? createReadStream(filePath) : createStdin();
   inputStream.setEncoding('utf8');
   inputStream.on('error', error =>
     write({ error: getErrorMessage(error.code, filePath), lines: '' })
