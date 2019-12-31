@@ -1,0 +1,6 @@
+cat ./appTests/sampleText1.txt |node cut.js -f 2 -d ","
+2
+12
+22
+32
+42
