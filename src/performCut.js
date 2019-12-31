@@ -27,7 +27,6 @@ const cut = (userOptions, { createReadStream, stdin }, write) => {
       error: ''
     });
   });
-  inputStream.on('end', () => {});
 };
 
 module.exports = { cut, getErrorMessage };
