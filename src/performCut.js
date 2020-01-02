@@ -1,3 +1,4 @@
+'use strict';
 const { parseCmdLineArgs, extractColumnsOfLine } = require('./cutLib');
 
 const getErrorMessage = (errcode, filePath) => {

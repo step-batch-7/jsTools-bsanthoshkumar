@@ -1,3 +1,4 @@
+'use strict';
 const parseCmdLineArgs = userOptions => {
   const [, fields, , delimiter, filePath] = userOptions;
   const fieldZeroValue = 0;
