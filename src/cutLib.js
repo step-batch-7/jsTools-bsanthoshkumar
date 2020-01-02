@@ -1,5 +1,5 @@
 'use strict';
-const parseCmdLineArgs = userOptions => {
+const parseUserOptions = userOptions => {
   const [, fields, , delimiter, filePath] = userOptions;
   const fieldZeroValue = 0;
   if (+fields === fieldZeroValue) {
@@ -11,19 +11,19 @@ const parseCmdLineArgs = userOptions => {
   return { fields, delimiter, filePath };
 };
 
-const extractColumnsOfLine = (fileContent, fields, delimiter) => {
-  fields = --fields;
-  const lines = fileContent.map(line => {
+const extractColumnsOfLines = (lines, fields, delimiter) => {
+  const columnNumber = fields - 1;
+  const rows = lines.map(line => {
     if (!line.includes(delimiter)) {
       return line;
     }
-    line = line.split(delimiter);
-    return line[fields];
+    const row = line.split(delimiter);
+    return row[columnNumber];
   });
-  return lines;
+  return rows;
 };
 
 module.exports = {
-  extractColumnsOfLine,
-  parseCmdLineArgs
+  extractColumnsOfLines,
+  parseUserOptions
 };

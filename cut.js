@@ -4,7 +4,7 @@ const { stdin, stdout, stderr } = process;
 const { cut } = require('./src/performCut');
 
 const write = resultOfCut => {
-  stdout.write(resultOfCut.lines);
+  stdout.write(resultOfCut.rows);
   stderr.write(resultOfCut.error);
 };
 

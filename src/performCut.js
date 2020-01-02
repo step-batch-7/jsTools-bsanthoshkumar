@@ -1,5 +1,5 @@
 'use strict';
-const { parseCmdLineArgs, extractColumnsOfLine } = require('./cutLib');
+const { parseUserOptions, extractColumnsOfLines } = require('./cutLib');
 
 const getErrorMessage = (errcode, filePath) => {
   const errorMessages = {
@@ -11,20 +11,20 @@ const getErrorMessage = (errcode, filePath) => {
 };
 
 const cut = (userOptions, { createReadStream, createStdin }, onComplete) => {
-  const { fields, delimiter, filePath, error } = parseCmdLineArgs(userOptions);
+  const { fields, delimiter, filePath, error } = parseUserOptions(userOptions);
   if (error) {
-    onComplete({ error: error, lines: '' });
+    onComplete({ error: error, rows: '' });
     return;
   }
   const inputStream = filePath ? createReadStream(filePath) : createStdin();
   inputStream.setEncoding('utf8');
   inputStream.on('error', error =>
-    onComplete({ error: getErrorMessage(error.code, filePath), lines: '' })
+    onComplete({ error: getErrorMessage(error.code, filePath), rows: '' })
   );
   inputStream.on('data', data => {
-    const content = data.split('\n');
-    const lines = extractColumnsOfLine(content, fields, delimiter).join('\n');
-    onComplete({ lines, error: '' });
+    const lines = data.split('\n');
+    const rows = extractColumnsOfLines(lines, fields, delimiter).join('\n');
+    onComplete({ rows, error: '' });
   });
 };
 

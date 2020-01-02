@@ -13,7 +13,7 @@ describe('cut', function() {
     assert(createReadStream.calledWith('./sampleText.text'));
     assert.strictEqual(readStream.on.secondCall.args[0], 'data');
     assert.strictEqual(readStream.on.callCount, 2);
-    assert(callBack.calledOnceWithExactly({ lines: 'c:d\n3\nc', error: '' }));
+    assert(callBack.calledOnceWithExactly({ rows: 'c:d\n3\nc', error: '' }));
   });
 
   it('should give particular field of all lines for standard input', () => {
@@ -25,7 +25,7 @@ describe('cut', function() {
     stdin.on.secondCall.args[1]('a:b,b:c,c:d,d:e,e:f\n1,2,3,4\na,b,c,d');
     assert.strictEqual(stdin.on.secondCall.args[0], 'data');
     assert.strictEqual(stdin.on.callCount, 2);
-    assert(callBack.calledOnceWithExactly({ lines: 'c:d\n3\nc', error: '' }));
+    assert(callBack.calledOnceWithExactly({ rows: 'c:d\n3\nc', error: '' }));
   });
 
   it('should give error for invalid user options', function() {
@@ -33,7 +33,7 @@ describe('cut', function() {
     const error = 'cut: [-cf] list: values may not include zero';
     const callBack = sinon.fake();
     cut(userOptions, {}, callBack);
-    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+    assert.ok(callBack.calledOnceWithExactly({ error, rows: '' }));
   });
 
   it('should give error for file not present ', function() {
@@ -46,7 +46,7 @@ describe('cut', function() {
     assert(createReadStream.calledWith('./a.txt'));
     assert.strictEqual(readStream.on.firstCall.args[0], 'error');
     assert.strictEqual(readStream.on.callCount, 2);
-    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+    assert.ok(callBack.calledOnceWithExactly({ error, rows: '' }));
   });
 
   it('should give error for a directory ', function() {
@@ -59,7 +59,7 @@ describe('cut', function() {
     assert(createReadStream.calledWith('./appTests'));
     assert.strictEqual(readStream.on.firstCall.args[0], 'error');
     assert.strictEqual(readStream.on.callCount, 2);
-    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+    assert.ok(callBack.calledOnceWithExactly({ error, rows: '' }));
   });
 
   it('should give error for file having no reading permissions', function() {
@@ -72,7 +72,7 @@ describe('cut', function() {
     assert(createReadStream.calledWith('./a.txt'));
     assert.strictEqual(readStream.on.firstCall.args[0], 'error');
     assert.strictEqual(readStream.on.callCount, 2);
-    assert.ok(callBack.calledOnceWithExactly({ error, lines: '' }));
+    assert.ok(callBack.calledOnceWithExactly({ error, rows: '' }));
   });
 });
 
