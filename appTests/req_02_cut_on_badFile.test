@@ -1,2 +1,2 @@
-cat ./appTests/sampleText1.txt |node cut.js -f 2 -d ","
-cat: ./appTests/sampleText1.txt: No such file or directory
+cat ./appTests/sample.txt |node cut.js -f 2 -d ","
+cat: ./appTests/sample.txt: No such file or directory
