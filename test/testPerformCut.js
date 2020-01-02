@@ -82,7 +82,7 @@ describe('getErrorMessage', function() {
     assert.strictEqual(getErrorMessage('ENOENT', './sample.txt'), expected);
   });
 
-  it('should give error permission denied for file having no read permissions', function() {
+  it('should give error for file having no read permissions', function() {
     const expected = 'cut: ./sample.txt: Permission denied';
     assert.strictEqual(getErrorMessage('EACCES', './sample.txt'), expected);
   });
