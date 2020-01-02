@@ -1,0 +1,2 @@
+cat ./appTests/sampleText.txt |node ./cut.js  -f 0 -d ","
+cut: [-cf] list: values may not include zero
