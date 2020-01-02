@@ -1,2 +1,2 @@
-node ./cut.js -f 0 -d "," ./appTests/sampleText1.txt
+node ./cut.js -f 0 -d "," ./appTests/sampleText.txt
 cut: [-cf] list: values may not include zero

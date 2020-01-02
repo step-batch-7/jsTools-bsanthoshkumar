@@ -1,4 +1,4 @@
-node ./cut.js -f 2 -d "," ./appTests/sampleText1.txt
+node ./cut.js -f 2 -d "," ./appTests/sampleText.txt
 2
 12
 22
