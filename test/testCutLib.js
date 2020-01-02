@@ -50,4 +50,10 @@ describe('parseUserOptions', () => {
     const expected = { error: 'cut: [-cf] list: illegal list value' };
     assert.deepStrictEqual(parseUserOptions(args), expected);
   });
+
+  it('should give error for commandLine args of delimiter -f', () => {
+    const args = ['-f', '3', '-d', '-f', './sampleText.js'];
+    const expected = { error: 'cut: bad delimiter' };
+    assert.deepStrictEqual(parseUserOptions(args), expected);
+  });
 });
